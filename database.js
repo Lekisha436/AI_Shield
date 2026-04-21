@@ -50,6 +50,10 @@ db.serialize(() => {
     db.run(`INSERT OR IGNORE INTO metrics (key, value) VALUES ('threatsBlocked', 1284)`);
     db.run(`INSERT OR IGNORE INTO metrics (key, value) VALUES ('activeScans', 42)`);
     db.run(`INSERT OR IGNORE INTO metrics (key, value) VALUES ('safetyScore', 98)`);
+
+    // Seed dummy evaluator account
+    const defaultHash = '$2b$10$MX8M8ws.5Zso64V8fd9UTuiDQ.DIb7RW0vvFmwG7M/iCEbH8zTJX2'; // 'hackathon2026'
+    db.run(`INSERT OR IGNORE INTO users (username, password_hash, created_at) VALUES ('evaluator', ?, ?)`, [defaultHash, new Date().toISOString()]);
 });
 
 module.exports = db;

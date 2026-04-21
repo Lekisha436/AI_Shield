@@ -55,16 +55,22 @@
         <div id="error-box" class="hidden mb-6 bg-error-container border border-error/20 text-on-error-container p-4 rounded-xl text-sm font-bold text-center"></div>
 
         <!-- Forms Container -->
-        <div class="relative overflow-hidden h-72">
+        <div class="relative overflow-hidden h-[20rem]">
             <!-- Login Form -->
             <form id="login-form" class="absolute w-full top-0 left-0 switch-anim flex flex-col gap-5">
+                
+                <!-- Evaluator Hint -->
+                <div class="bg-primary/10 text-primary border border-primary/20 text-xs text-center py-2 px-3 rounded-lg font-bold flex items-center justify-center gap-2 mb-1">
+                    <span class="material-symbols-outlined text-[16px]">how_to_reg</span> Evaluator Demo Credentials Pre-filled
+                </div>
+
                 <div>
                     <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 block">Agent ID / Username</label>
-                    <input type="text" id="login-user" required class="w-full px-5 py-3 rounded-xl border border-outline-variant bg-surface-container-low focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-on-surface-variant/40 font-semibold" placeholder="system.admin">
+                    <input type="text" id="login-user" value="evaluator" required class="w-full px-5 py-3 rounded-xl border border-outline-variant bg-surface-container-low focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all font-semibold text-primary" placeholder="system.admin">
                 </div>
                 <div>
                     <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 block">Access Cipher</label>
-                    <input type="password" id="login-pass" required class="w-full px-5 py-3 rounded-xl border border-outline-variant bg-surface-container-low focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-on-surface-variant/40 font-semibold" placeholder="••••••••">
+                    <input type="password" id="login-pass" value="hackathon2026" required class="w-full px-5 py-3 rounded-xl border border-outline-variant bg-surface-container-low focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all font-semibold" placeholder="••••••••">
                 </div>
                 <button type="submit" class="w-full mt-2 py-3.5 bg-primary text-white rounded-xl font-bold uppercase tracking-widest hover:bg-blue-800 transition-colors shadow-md active:scale-95 flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined text-sm">login</span> Authenticate
