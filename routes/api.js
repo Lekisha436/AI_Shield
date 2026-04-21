@@ -3,9 +3,10 @@ const router = express.Router();
 const db = require('../database');
 const { GoogleGenAI } = require('@google/genai');
 
-// Initialize Gemini Client
-const genAI = new GoogleGenAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+// Initialize Gemini Client with the new @google/genai SDK pattern
+const ai = new GoogleGenAI({ 
+    apiKey: process.env.GEMINI_API_KEY 
+});
 
 // GET /api/v1/health
 router.get('/health', (req, res) => {
@@ -36,7 +37,7 @@ router.post('/scan', async (req, res) => {
     let status = 'Safe';
     let resultText = 'Clean';
 
-    if (!process.env.GEMINI_API_KEY) {
+    if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'YOUR_API_KEY_HERE') {
         return res.json({
             result: "API_KEY_MISSING",
             riskScore: 0,
@@ -60,8 +61,11 @@ Respond ONLY with a raw JSON object containing the exact following keys:
 Do not return markdown, do not wrap in \`\`\`. ONLY valid JSON.
 `;
         
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
+        const response = await ai.models.generateContent({
+            model: 'gemini-1.5-flash',
+            contents: prompt
+        });
+
         let outputStr = response.text().trim();
 
         // Clean markdown JSON wrapper if the model aggressively included it
@@ -70,7 +74,7 @@ Do not return markdown, do not wrap in \`\`\`. ONLY valid JSON.
             if (match) outputStr = match[1];
         }
 
-        const aiData = JSON.parse(outputStr);
+        const aiData = JSON.parse(outputStr.trim());
         riskScore = aiData.riskScore || 0;
         findings = aiData.findings || [];
         status = aiData.status || 'Safe';
@@ -122,7 +126,7 @@ router.post('/chat', async (req, res) => {
     if (!message) return res.status(400).json({ error: 'Message is required' });
     const timestamp = new Date().toISOString();
 
-    if (!process.env.GEMINI_API_KEY) {
+    if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'YOUR_API_KEY_HERE') {
         return res.json({ reply: "⚠️ Error: The Shield AI requires a GEMINI_API_KEY in the environment variables to function.", timestamp });
     }
 
@@ -144,8 +148,11 @@ Keep your answers brief, professional, and confident. Do NOT use markdown code b
 ${contextStr}
 User's query: "${message}"`;
 
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
+            const response = await ai.models.generateContent({
+                model: 'gemini-1.5-flash',
+                contents: prompt
+            });
+
             const reply = response.text().trim();
             
             db.run('INSERT INTO chat_history (role, message, timestamp) VALUES (?,?,?)', ['user', message, timestamp]);
@@ -156,12 +163,6 @@ User's query: "${message}"`;
     } catch (err) {
         console.error("Gemini Chat Error:", err);
         res.status(500).json({ reply: "System Malfunction: Unable to reach the Neural Core.", timestamp });
-    }
-
-    if (!req.env) {
-        db.run('INSERT INTO chat_history (role, message, timestamp) VALUES (?,?,?)', ['user', message, timestamp]);
-        db.run('INSERT INTO chat_history (role, message, timestamp) VALUES (?,?,?)', ['assistant', reply, timestamp]);
-        res.json({ reply, timestamp });
     }
 });
 
