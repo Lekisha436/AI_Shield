@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aegis Lumina | AI Digital Shield</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "outline": "#737686",
+                      "error": "#ba1a1a",
+                      "secondary-container": "#acbfff",
+                      "on-tertiary-fixed-variant": "#005321",
+                      "on-tertiary": "#ffffff",
+                      "surface-tint": "#0053db",
+                      "on-primary": "#ffffff",
+                      "tertiary-container": "#007e37",
+                      "outline-variant": "#c3c6d7",
+                      "on-primary-fixed-variant": "#003ea8",
+                      "on-primary-fixed": "#00174b",
+                      "inverse-on-surface": "#f0f0fb",
+                      "primary": "#004ac6",
+                      "on-tertiary-fixed": "#002109",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed-dim": "#4ae176",
+                      "surface": "#faf8ff",
+                      "on-primary-container": "#eeefff",
+                      "tertiary": "#006229",
+                      "on-tertiary-container": "#c1ffc5",
+                      "on-secondary-fixed-variant": "#31447b",
+                      "surface-container-high": "#e7e7f3",
+                      "on-secondary-fixed": "#00174b",
+                      "primary-fixed-dim": "#b4c5ff",
+                      "primary-fixed": "#dbe1ff",
+                      "on-secondary-container": "#394c84",
+                      "tertiary-fixed": "#6bff8f",
+                      "surface-container-highest": "#e1e2ed",
+                      "primary-container": "#2563eb",
+                      "inverse-primary": "#b4c5ff",
+                      "background": "#faf8ff",
+                      "surface-container": "#ededf9",
+                      "on-background": "#191b23",
+                      "secondary-fixed": "#dbe1ff",
+                      "secondary-fixed-dim": "#b4c5ff",
+                      "surface-container-low": "#f3f3fe",
+                      "error-container": "#ffdad6",
+                      "surface-variant": "#e1e2ed",
+                      "surface-bright": "#faf8ff",
+                      "on-surface": "#191b23",
+                      "inverse-surface": "#2e3039",
+                      "on-error": "#ffffff",
+                      "secondary": "#495c95",
+                      "on-surface-variant": "#434655",
+                      "on-error-container": "#93000a",
+                      "surface-dim": "#d9d9e5"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "fontFamily": {
+                      "headline": ["Inter"],
+                      "body": ["Inter"],
+                      "label": ["Inter"]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+      </style>
+</head>
+<body class="bg-surface font-body text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl bg-surface-container-low/30 shadow-sm shadow-blue-900/5 h-16">
+<div class="flex justify-between items-center h-16 px-8 max-w-[1920px] mx-auto font-['Inter'] antialiased tracking-tight">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black tracking-tighter text-blue-800 dark:text-blue-300" style="">AI Digital Shield</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-blue-700 dark:text-blue-400 font-bold border-b-2 border-blue-700 dark:border-blue-400 pb-1" href="#" style="">Home</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium hover:text-blue-600 transition-colors" href="#" style="">Scan</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium hover:text-blue-600 transition-colors" href="#" style="">Chatbot</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium hover:text-blue-600 transition-colors" href="#" style="">Dashboard</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-slate-100/50 rounded-lg transition-all active:scale-95 duration-200 ease-out" style="">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications" style="">notifications</span>
+</button>
+<button class="p-2 hover:bg-slate-100/50 rounded-lg transition-all active:scale-95 duration-200 ease-out" style="">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="settings" style="">settings</span>
+</button>
+<img alt="Security Administrator Profile" class="w-8 h-8 rounded-full ring-2 ring-primary-fixed ml-2" data-alt="Professional portrait of a male cybersecurity specialist in a modern glass office environment with tech screens" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCr-q9omKRgSUEoJ0U3N1FtuCfPe8frKnZ4RKUY_hsEyUOoooq1lfQi3ohzs9txY5ZcXuvBaNXtGj7N8ogtmIsWEr4--FdhozZVsrOVcOtBnE8TtnbSrsBtyqiE-3sPy93MEEf0AkWSVKt-owEV45ibBLKCSImMNPgYMYbnrlr5BIs7SqnziulE6hxNEnoU9ExDTOlHVEduLx7elS7G7u7zzYp0Mkt6tW4sL5Sfje-tkPfXrPtODJ4DJCyxxfFvfLxLPJ8OzS2z46k" style=""/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Hidden on Mobile) -->
+<aside class="hidden md:flex flex-col pt-20 pb-8 h-screen w-64 fixed left-0 top-0 bg-slate-50 dark:bg-slate-900 font-['Inter'] text-sm font-semibold uppercase tracking-widest transition-all duration-300 ease-in-out">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined" data-icon="security" style='font-variation-settings: "FILL" 1;'>security</span>
+</div>
+<div>
+<p class="text-lg font-bold text-slate-900 dark:text-white normal-case tracking-normal" style="">Guardian Core</p>
+<p class="text-[10px] text-tertiary font-bold tracking-widest uppercase" style="">System Secure</p>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<nav class="space-y-1">
+<a class="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-r-full py-3 px-6 flex items-center gap-3" href="#" style="">
+<span class="material-symbols-outlined" data-icon="security" style="">security</span>
+                    Threat Matrix
+                </a>
+<a class="text-slate-500 dark:text-slate-400 py-3 px-6 flex items-center gap-3 hover:bg-slate-200/50 transition-all" href="#" style="">
+<span class="material-symbols-outlined" data-icon="lock" style="">lock</span>
+                    Vault
+                </a>
+<a class="text-slate-500 dark:text-slate-400 py-3 px-6 flex items-center gap-3 hover:bg-slate-200/50 transition-all" href="#" style="">
+<span class="material-symbols-outlined" data-icon="history" style="">history</span>
+                    Activity
+                </a>
+<a class="text-slate-500 dark:text-slate-400 py-3 px-6 flex items-center gap-3 hover:bg-slate-200/50 transition-all" href="#" style="">
+<span class="material-symbols-outlined" data-icon="contact_support" style="">contact_support</span>
+                    Support
+                </a>
+</nav>
+</div>
+<div class="px-6 mt-auto">
+<button class="w-full py-3 bg-error text-white rounded-xl font-bold uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 mb-6" style="">
+<span class="material-symbols-outlined text-sm" data-icon="gpp_bad" style="">gpp_bad</span>
+                Emergency Lockdown
+            </button>
+<a class="text-slate-500 dark:text-slate-400 py-3 flex items-center gap-3 hover:bg-slate-200/50 transition-all" href="#" style="">
+<span class="material-symbols-outlined" data-icon="logout" style="">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-20 px-4 md:px-12 pb-24 min-h-screen bg-surface">
+<header class="mb-10">
+<h1 class="text-4xl font-extrabold tracking-tighter text-on-surface mb-2" style="">AI Digital Shield</h1>
+<p class="text-on-surface-variant body-lg" style="">Advanced real-time heuristic scanning for digital threats.</p>
+</header>
+<!-- Stats Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm flex flex-col justify-between h-32">
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant" style="">Total Scans</span>
+<span class="text-4xl font-extrabold tracking-tighter text-primary" style="">1,284</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm flex flex-col justify-between h-32">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant" style="">Threats Blocked</span>
+<span class="material-symbols-outlined text-error" data-icon="warning" style="">warning</span>
+</div>
+<span class="text-4xl font-extrabold tracking-tighter text-error" style="">42</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm flex flex-col justify-between h-32">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant" style="">Safety Score</span>
+<span class="material-symbols-outlined text-tertiary" data-icon="verified_user" style="">verified_user</span>
+</div>
+<span class="text-4xl font-extrabold tracking-tighter text-tertiary" style="">98%</span>
+</div>
+</section>
+<!-- Scanning Tabs Section -->
+<section class="bg-surface-container-low rounded-xl p-2 mb-4 inline-flex items-center gap-1 w-full md:w-auto">
+<button class="bg-surface-container-lowest text-primary font-bold px-6 py-3 rounded-xl flex items-center gap-2 shadow-sm" style="">
+<span class="material-symbols-outlined" data-icon="chat" style="">chat</span> Message Scan
+            </button>
+<button class="text-on-surface-variant font-medium px-6 py-3 rounded-xl flex items-center gap-2 hover:bg-white/40 transition-all" style="">
+<span class="material-symbols-outlined" data-icon="link" style="">link</span> URL Scan
+            </button>
+<button class="text-on-surface-variant font-medium px-6 py-3 rounded-xl flex items-center gap-2 hover:bg-white/40 transition-all" style="">
+<span class="material-symbols-outlined" data-icon="mail" style="">mail</span> Email Scan
+            </button>
+<button class="text-on-surface-variant font-medium px-6 py-3 rounded-xl flex items-center gap-2 hover:bg-white/40 transition-all" style="">
+<span class="material-symbols-outlined" data-icon="image" style="">image</span> Image Scan
+            </button>
+</section>
+<!-- Scanner Input Areas -->
+<section class="mb-10 space-y-6">
+<!-- Message Scan Input (Active State) -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-primary/10">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="chat">chat</span>
+<h2 class="text-sm font-bold uppercase tracking-widest text-on-surface">Message Intelligence Scan</h2>
+</div>
+<div class="space-y-4">
+<textarea class="w-full h-32 bg-surface p-4 rounded-xl border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none text-on-surface placeholder:text-on-surface-variant/50" placeholder="Paste your message here..."></textarea>
+<div class="flex justify-end">
+<button class="bg-primary text-white font-bold py-3 px-8 rounded-xl flex items-center gap-2 hover:bg-primary/90 transition-all shadow-md active:scale-95">
+<span class="material-symbols-outlined text-sm" data-icon="psychology">psychology</span>
+                    Analyze Message
+                </button>
+</div>
+</div>
+</div>
+<!-- Hidden by default in UI but structured here for the "In each scanner tab" requirement -->
+<!-- URL Scan Input (Mock Hidden State Example) -->
+<div class="hidden bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-primary/10">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="link">link</span>
+<h2 class="text-sm font-bold uppercase tracking-widest text-on-surface">Secure URL Analysis</h2>
+</div>
+<div class="flex gap-3">
+<input class="flex-1 bg-surface p-4 rounded-xl border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-on-surface placeholder:text-on-surface-variant/50" placeholder="Paste your URL here (e.g. https://...)" type="text"/>
+<button class="bg-primary text-white font-bold py-3 px-8 rounded-xl flex items-center gap-2 hover:bg-primary/90 transition-all shadow-md active:scale-95">
+                Analyze URL
+            </button>
+</div>
+</div>
+<!-- Email Scan Input (Mock Hidden State Example) -->
+<div class="hidden bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-primary/10">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="mail">mail</span>
+<h2 class="text-sm font-bold uppercase tracking-widest text-on-surface">Deep Email Scrub</h2>
+</div>
+<div class="space-y-4">
+<textarea class="w-full h-40 bg-surface p-4 rounded-xl border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none text-on-surface placeholder:text-on-surface-variant/50" placeholder="Paste full email content or headers here..."></textarea>
+<div class="flex justify-end">
+<button class="bg-primary text-white font-bold py-3 px-8 rounded-xl flex items-center gap-2 hover:bg-primary/90 transition-all shadow-md">
+                    Scan Email
+                </button>
+</div>
+</div>
+</div>
+<!-- Image Scan Input (Mock Hidden State Example) -->
+<div class="hidden bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-primary/10">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="image">image</span>
+<h2 class="text-sm font-bold uppercase tracking-widest text-on-surface">OCR Threat Detection</h2>
+</div>
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-10 flex flex-col items-center justify-center gap-4 hover:bg-surface-container transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant group-hover:text-primary transition-colors" data-icon="upload_file">upload_file</span>
+<div class="text-center">
+<p class="font-bold text-on-surface">Drop image here or click to browse</p>
+<p class="text-xs text-on-surface-variant">Supports PNG, JPG, JPEG (Max 5MB)</p>
+</div>
+<button class="mt-2 bg-surface-container-highest text-on-surface font-bold py-2 px-6 rounded-lg text-sm border border-outline-variant">Choose Image</button>
+</div>
+</div>
+</section>
+<!-- Bento Layout for Results -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Active Scan Results (Left Column) -->
+<div class="lg:col-span-8 space-y-6">
+<!-- Result Card: Message Scan -->
+<div class="bg-surface-container-lowest rounded-xl p-8 shadow-sm">
+<div class="flex justify-between items-start mb-8">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<h2 class="headline-lg font-extrabold text-2xl" style="">Scan Result</h2>
+<span class="bg-error-container text-on-error-container px-3 py-1 rounded-full text-xs font-black uppercase flex items-center gap-1" style="">
+                                    🚨 Scam Detected (92%)
+                                </span>
+</div>
+<p class="text-on-surface-variant text-sm" style="">Source: Unknown Number (+1 888-234-XXXX)</p>
+</div>
+<div class="flex items-center gap-2 text-primary font-bold text-sm" style="">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+</span>
+                            Scanning Complete
+                        </div>
+</div>
+<!-- Suspicious Text Visualization -->
+<div class="bg-surface-container-low p-6 rounded-xl mb-8 border-l-4 border-error">
+<p class="text-lg leading-relaxed font-medium italic text-on-surface" style="">
+                            "Urgent: Internal Security Alert. We have detected unauthorized access to your banking portal. Your <span class="underline decoration-error decoration-2 underline-offset-4 font-bold text-error" style="">account suspended, click here</span> immediately to verify your identity at support-secure-login.net/auth or face permanent lockout."
+                        </p>
+</div>
+<!-- AI Insights -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+<div class="bg-surface p-6 rounded-xl border border-outline-variant/30">
+<h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4 flex items-center gap-2" style="">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="psychology" style="">psychology</span>
+                                AI Explanation
+                            </h3>
+<p class="text-sm text-on-surface leading-relaxed" style="">
+                                This message uses **Urgency &amp; Fear** tactics typical of phishing. The URL contains a mismatched domain, and the grammatical structure is inconsistent with official banking communications.
+                            </p>
+</div>
+<div class="bg-surface p-6 rounded-xl border border-outline-variant/30">
+<h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4 flex items-center gap-2" style="">
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="task_alt" style="">task_alt</span>
+                                Recommended Actions
+                            </h3>
+<div class="flex flex-col gap-2">
+<button class="w-full py-2 bg-error text-white rounded-lg text-sm font-bold active:scale-[0.98] transition-transform" style="">Do Not Click Link</button>
+<div class="grid grid-cols-2 gap-2">
+<button class="py-2 bg-surface-container-highest text-on-surface rounded-lg text-sm font-bold" style="">Block Sender</button>
+<button class="py-2 bg-surface-container-highest text-on-surface rounded-lg text-sm font-bold" style="">Report</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- URL Scan Visualization -->
+<div class="bg-surface-container-lowest rounded-xl p-8 shadow-sm">
+<h3 class="text-lg font-extrabold mb-6" style="">Domain Analysis: support-secure-login.net</h3>
+<div class="flex items-center gap-6 mb-8">
+<div class="flex-1">
+<div class="flex justify-between text-xs font-bold uppercase mb-2">
+<span class="text-on-surface-variant" style="">Risk Level</span>
+<span class="text-error" style="">Dangerous</span>
+</div>
+<div class="h-3 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-error rounded-full" style="width: 88%;"></div>
+</div>
+</div>
+<div class="text-center">
+<div class="text-2xl font-black text-error" style="">88/100</div>
+<div class="text-[10px] uppercase font-bold text-on-surface-variant" style="">Risk Index</div>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="p-3 bg-surface rounded-lg text-center">
+<span class="material-symbols-outlined text-error text-lg block mb-1" data-icon="gpp_maybe" style="">gpp_maybe</span>
+<span class="text-[10px] font-bold uppercase" style="">SSL Valid: No</span>
+</div>
+<div class="p-3 bg-surface rounded-lg text-center">
+<span class="material-symbols-outlined text-error text-lg block mb-1" data-icon="history" style="">history</span>
+<span class="text-[10px] font-bold uppercase" style="">Age: 2 Days</span>
+</div>
+<div class="p-3 bg-surface rounded-lg text-center">
+<span class="material-symbols-outlined text-tertiary text-lg block mb-1" data-icon="public" style="">public</span>
+<span class="text-[10px] font-bold uppercase" style="">Host: Russia</span>
+</div>
+<div class="p-3 bg-surface rounded-lg text-center">
+<span class="material-symbols-outlined text-error text-lg block mb-1" data-icon="list_alt" style="">list_alt</span>
+<span class="text-[10px] font-bold uppercase" style="">Blacklisted</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Side Panels (Right Column) -->
+<div class="lg:col-span-4 space-y-6">
+<!-- Shield Assistant Chatbot -->
+<!-- Recent Activity/Secondary Analysis -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm">
+<h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4" style="">Email Threat Insight</h3>
+<div class="space-y-4">
+<div class="flex gap-4 items-start">
+<div class="w-10 h-10 rounded-full bg-error-container flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-error" data-icon="alternate_email" style="">alternate_email</span>
+</div>
+<div>
+<p class="text-sm font-bold" style="">Fake Sender Alert</p>
+<p class="text-xs text-on-surface-variant" style="">sender: support@appIe-id.com</p>
+<div class="mt-2 text-[11px] bg-error-container/20 text-error p-2 rounded-lg border border-error/10" style="">
+                                    AI Insight: Domain uses "I" (capital i) instead of "l" (lowercase L).
+                                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- OCR/Image Scan Preview -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm">
+<h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4" style="">OCR Image Scan</h3>
+<div class="relative rounded-lg overflow-hidden border border-outline-variant/30 mb-4 h-40">
+<img alt="Digital scam example image" class="w-full h-full object-cover opacity-50 grayscale" data-alt="Blurred screenshot of a deceptive SMS message on a smartphone screen with glowing digital red highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdcnLcTc0NBfD2AMalfrIMyLnlL2EnCIIRtnVcZ4vEEJbnJ0kIx4lNFfNFHOHD8LaJTcZVfyJJQXo9URSXmJew3bKZ3h6Rj-naIHmayrOh5HCw4eh-oND2Ro5lYUe1Ody9GG1aF2Q12gbbAgKWaSsLhFYMLB83gt5Fd0QCCfuKiAzwMO4VaGh-9CG-Uoaz0QjwVypGllWoJNGZ1rXKebP1IlzYjgdpK4PSYp-OIk60gA0J5PLvoFp34-h8FtdX7ucJtkK335z0qJ8" style=""/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-white/90 p-4 rounded-xl shadow-lg max-w-[80%]">
+<p class="text-[10px] font-mono text-on-surface leading-tight" style="">
+                                    [EXTRACTED TEXT]<br/>
+                                    Your win is <span class="bg-error/20 text-error font-bold" style="">$10,000</span>. Please 
+                                    <span class="bg-error/20 text-error font-bold" style="">verify your bank</span> account now...
+                                </p>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-bold text-error" style="">Scam Keywords Found: 3</span>
+<button class="text-[10px] font-bold text-primary uppercase underline" style="">Full Report</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-xl flex justify-around items-center h-20 px-4 border-t-0 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] z-50">
+<button class="flex flex-col items-center gap-1 text-primary" style="">
+<span class="material-symbols-outlined" data-icon="home" style='font-variation-settings: "FILL" 1;'>home</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter" style="">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant" style="">
+<span class="material-symbols-outlined" data-icon="search" style="">search</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter" style="">Scan</span>
+</button>
+<button class="w-12 h-12 bg-primary rounded-full -mt-10 shadow-lg flex items-center justify-center text-white border-4 border-surface" style="">
+<span class="material-symbols-outlined" data-icon="add" style="">add</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant" style="">
+<span class="material-symbols-outlined" data-icon="chat" style="">chat</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter" style="">Chat</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant" style="">
+<span class="material-symbols-outlined" data-icon="account_circle" style="">account_circle</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter" style="">Profile</span>
+</button>
+</nav>
+<!-- FAB (Contextual for Scanning) -->
+<button class="fixed bottom-8 right-8 w-16 h-16 md:flex hidden bg-primary text-white rounded-2xl shadow-[0_12px_24px_rgba(37,99,235,0.4)] items-center justify-center group active:scale-95 transition-all z-40" style="">
+<span class="material-symbols-outlined text-3xl group-hover:rotate-12 transition-transform" data-icon="radar" style="">radar</span>
+</button>
+</body></html>

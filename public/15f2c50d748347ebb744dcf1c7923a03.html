@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Digital Shield | Obsidian Sentinel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#6c0f4c",
+                      "inverse-surface": "#fdf7ff",
+                      "secondary-fixed-dim": "#37d4ff",
+                      "on-secondary-container": "#eef9ff",
+                      "surface-container-low": "#160a36",
+                      "error-dim": "#d73357",
+                      "secondary-fixed": "#80deff",
+                      "secondary": "#00cffc",
+                      "on-tertiary-container": "#5e0041",
+                      "outline-variant": "#4c426a",
+                      "on-secondary-fixed": "#003a48",
+                      "primary-container": "#9995ff",
+                      "surface-container": "#1d103f",
+                      "primary-fixed": "#9995ff",
+                      "on-error": "#490013",
+                      "primary": "#a8a4ff",
+                      "surface-container-high": "#231649",
+                      "on-primary-container": "#16007d",
+                      "tertiary-dim": "#eb7bb8",
+                      "inverse-on-surface": "#594f78",
+                      "surface": "#11062d",
+                      "background": "#11062d",
+                      "primary-fixed-dim": "#8a85ff",
+                      "on-surface-variant": "#b1a4d3",
+                      "on-tertiary-fixed": "#360023",
+                      "surface-variant": "#2a1b52",
+                      "inverse-primary": "#5044e3",
+                      "tertiary-fixed": "#fe8bc9",
+                      "on-tertiary-fixed-variant": "#6d104c",
+                      "tertiary-container": "#fb88c6",
+                      "surface-container-highest": "#2a1b52",
+                      "on-secondary-fixed-variant": "#00586d",
+                      "tertiary-fixed-dim": "#ee7ebb",
+                      "outline": "#7a6f9b",
+                      "on-primary-fixed": "#000000",
+                      "surface-bright": "#31215c",
+                      "error-container": "#a70138",
+                      "on-primary": "#1e009f",
+                      "tertiary": "#ff9dd0",
+                      "error": "#ff6e84",
+                      "surface-tint": "#a8a4ff",
+                      "surface-dim": "#11062d",
+                      "on-background": "#ebe1ff",
+                      "secondary-dim": "#00c0ea",
+                      "on-error-container": "#ffb2b9",
+                      "on-primary-fixed-variant": "#1d0098",
+                      "primary-dim": "#675df9",
+                      "secondary-container": "#00677f",
+                      "on-surface": "#ebe1ff",
+                      "on-secondary": "#004050",
+                      "surface-container-lowest": "#000000"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Manrope"],
+                      "body": ["Inter"],
+                      "label": ["Inter"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { background-color: #11062d; font-family: 'Inter', sans-serif; color: #ebe1ff; overflow-x: hidden; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        .glass-panel { background: rgba(42, 27, 82, 0.2); backdrop-filter: blur(24px); border: 1px solid rgba(177, 164, 211, 0.1); }
+        .hero-gradient { background: radial-gradient(circle at 50% 50%, #31215c 0%, #11062d 100%); }
+        .scan-line { height: 2px; background: linear-gradient(90deg, transparent, #00cffc, transparent); animation: scan 3s steps(60) infinite; }
+        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
+    </style>
+</head>
+<body class="selection:bg-primary-container selection:text-on-primary-container">
+<!-- Header (Shared Component: TopAppBar) -->
+<header class="flex justify-between items-center w-full px-8 py-4 sticky top-0 bg-[#160a36]/80 backdrop-blur-3xl no-border bg-gradient-to-b from-[#11062d] to-transparent shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] z-50">
+<div class="text-2xl font-black tracking-tighter text-white font-['Manrope']">AI Digital Shield</div>
+<nav class="hidden md:flex items-center space-x-8">
+<a class="text-[#a8a4ff] border-b-2 border-[#a8a4ff] pb-1 font-['Manrope'] tracking-tight text-sm uppercase font-bold" href="#">Dashboard</a>
+<a class="text-[#b1a4d3] hover:text-white transition-colors font-['Manrope'] tracking-tight text-sm uppercase font-bold" href="#">Scanners</a>
+<a class="text-[#b1a4d3] hover:text-white transition-colors font-['Manrope'] tracking-tight text-sm uppercase font-bold" href="#">Extension</a>
+<a class="text-[#b1a4d3] hover:text-white transition-colors font-['Manrope'] tracking-tight text-sm uppercase font-bold" href="#">Security Feed</a>
+</nav>
+<div class="flex items-center space-x-4">
+<button class="p-2 text-[#a8a4ff] hover:bg-[#31215c]/50 rounded-full transition-all active:scale-95 duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="bg-gradient-to-br from-primary to-primary-dim text-on-primary-fixed px-6 py-2.5 rounded-full font-bold text-sm hover:shadow-[0_0_20px_rgba(168,164,255,0.4)] transition-all">
+                Scan Now
+            </button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 py-12 space-y-24">
+<!-- Hero Section & Dashboard Stats -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<div class="lg:col-span-7 space-y-6">
+<h1 class="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter text-on-background leading-tight">
+                    Your Digital <br/> <span class="text-secondary">Obsidian Sentinel.</span>
+</h1>
+<p class="text-on-surface-variant text-lg max-w-xl leading-relaxed">
+                    AI-powered defense against sophisticated social engineering, phishing, and malware threats. Neutralize scams before they touch your data.
+                </p>
+<div class="flex gap-4 pt-4">
+<button class="bg-gradient-to-br from-secondary to-secondary-container text-white px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">security</span>
+                        Deploy Shield
+                    </button>
+<button class="bg-surface-variant/20 border border-outline-variant/30 text-on-surface px-8 py-4 rounded-xl font-bold backdrop-blur-xl hover:bg-surface-variant/40 transition-all">
+                        Learn Intelligence
+                    </button>
+</div>
+</div>
+<!-- Dashboard Bento Grid -->
+<div class="lg:col-span-5 grid grid-cols-2 gap-4">
+<div class="col-span-2 glass-panel p-6 rounded-xl space-y-4">
+<div class="flex justify-between items-center">
+<span class="font-headline font-bold text-sm text-secondary uppercase tracking-widest">Protection Score</span>
+<span class="text-2xl font-black text-white">98.2%</span>
+</div>
+<div class="h-2 w-full bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="h-full bg-secondary shadow-[0_0_10px_#00cffc] w-[98%]"></div>
+</div>
+</div>
+<div class="surface-container p-6 rounded-xl space-y-2 border border-outline-variant/10">
+<span class="text-on-surface-variant text-xs uppercase tracking-tighter font-bold">Scans Today</span>
+<p class="text-3xl font-black text-white">1,284</p>
+</div>
+<div class="surface-container-high p-6 rounded-xl space-y-2 border border-outline-variant/10">
+<span class="text-on-surface-variant text-xs uppercase tracking-tighter font-bold">Threats Blocked</span>
+<p class="text-3xl font-black text-error">42</p>
+</div>
+</div>
+</section>
+<!-- WhatsApp Scam Scanner -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="order-2 lg:order-1 glass-panel p-8 rounded-xl relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-error/5 to-transparent pointer-events-none"></div>
+<div class="relative z-10 space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="font-headline text-xl font-bold text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">chat</span>
+                            WhatsApp Message Analysis
+                        </h3>
+<span class="bg-error-container text-on-error-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest">🚨 Scam Detected (92%)</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-error/20 font-body text-sm leading-loose">
+                        "Hello! I'm from <span class="underline decoration-error decoration-2 underline-offset-4 font-bold">WhatsApp Support</span>. Your account will be <span class="underline decoration-error decoration-2 underline-offset-4 font-bold">deleted in 2 hours</span> unless you verify your identity. Please <span class="underline decoration-error decoration-2 underline-offset-4 font-bold">click this link</span> to confirm: http://wa-security-login.xyz/verify-account"
+                    </div>
+<div class="flex gap-4">
+<button class="flex-1 bg-surface-bright py-3 rounded-xl font-bold text-on-surface hover:bg-surface-variant transition-colors">Clear</button>
+<button class="flex-[2] bg-gradient-to-r from-primary to-primary-dim py-3 rounded-xl font-bold text-on-primary-fixed shadow-lg shadow-primary/20">Analyze New Message</button>
+</div>
+</div>
+</div>
+<div class="order-1 lg:order-2 space-y-6">
+<div class="bg-surface-container p-8 rounded-xl border-l-4 border-secondary">
+<h4 class="font-headline font-bold text-secondary mb-2 uppercase text-xs tracking-widest">AI Insight</h4>
+<p class="text-on-surface leading-relaxed italic">
+                        "The attacker uses urgent language ('deleted in 2 hours') and a deceptive URL structure to induce panic. The domain 'wa-security-login.xyz' is not an official WhatsApp property and was registered 48 hours ago."
+                    </p>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">verified_user</span>
+<span class="text-sm">Obsidian Sentinel AI has indexed over 14 million known phishing patterns.</span>
+</div>
+</div>
+</section>
+<!-- URL & Email Scanners -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- URL Scanner -->
+<div class="lg:col-span-2 glass-panel p-8 rounded-xl space-y-8 flex flex-col justify-between">
+<div>
+<h3 class="font-headline text-2xl font-bold text-white mb-4">Deep URL Inspection</h3>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-none rounded-xl py-4 px-6 text-on-surface focus:ring-2 focus:ring-secondary/50 placeholder:text-outline/50 transition-all" placeholder="Paste URL to verify..." type="text"/>
+<button class="absolute right-2 top-2 bottom-2 bg-secondary text-on-secondary-fixed px-6 rounded-lg font-bold hover:brightness-110 transition-all">Inspect</button>
+</div>
+</div>
+<div class="flex items-center gap-12 bg-surface-container/50 p-6 rounded-xl">
+<div class="relative h-32 w-32 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-outline-variant/20" cx="64" cy="64" fill="transparent" r="56" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-secondary" cx="64" cy="64" fill="transparent" r="56" stroke="currentColor" stroke-dasharray="351.85" stroke-dashoffset="100" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="text-2xl font-black text-white leading-none">Safe</span>
+<span class="text-[10px] text-secondary font-bold uppercase tracking-widest">Risk: 8%</span>
+</div>
+</div>
+<div class="space-y-2">
+<h5 class="font-bold text-white">Security Analysis</h5>
+<ul class="text-sm text-on-surface-variant space-y-1">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-xs text-secondary">check_circle</span> Valid SSL Certificate</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-xs text-secondary">check_circle</span> No Malware Signature</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-xs text-secondary">check_circle</span> Clean DNS History</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Phishing Detector Card -->
+<div class="surface-container p-8 rounded-xl border border-outline-variant/10 flex flex-col">
+<div class="mb-6">
+<div class="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary text-3xl">mail</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-white">Email Detector</h3>
+<p class="text-sm text-on-surface-variant mt-2">Upload .eml or paste headers for deep metadata analysis.</p>
+</div>
+<div class="flex-grow border-2 border-dashed border-outline-variant/30 rounded-xl flex flex-col items-center justify-center p-6 text-center hover:border-primary/50 transition-colors group cursor-pointer">
+<span class="material-symbols-outlined text-4xl text-outline-variant group-hover:text-primary mb-2">upload_file</span>
+<span class="text-xs font-bold text-on-surface-variant group-hover:text-on-surface">Drop file here or click to browse</span>
+</div>
+<div class="mt-6 bg-error-container/10 p-4 rounded-lg flex items-start gap-3">
+<span class="material-symbols-outlined text-error text-xl">warning</span>
+<div>
+<p class="text-xs font-bold text-error uppercase">Sender Warning</p>
+<p class="text-xs text-on-surface-variant">Hidden sender mismatch detected. Envelope 'support@pay-pal.com' does not match SPF record.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Extension Mock & CTA Section -->
+<section class="relative">
+<div class="bg-gradient-to-r from-surface-container-high to-surface-container p-12 rounded-xl flex flex-col lg:flex-row items-center gap-12 overflow-hidden">
+<div class="flex-1 space-y-6 text-center lg:text-left">
+<h2 class="font-headline text-4xl font-extrabold text-white">Shield Your Browser.</h2>
+<p class="text-on-surface-variant max-w-lg">Get real-time alerts as you browse. Our lightweight Chrome &amp; Firefox extension blocks phishing sites before they load.</p>
+<button class="bg-primary text-on-primary-fixed px-8 py-4 rounded-full font-bold hover:shadow-[0_0_30px_rgba(168,164,255,0.5)] transition-all">Install Extension</button>
+</div>
+<!-- Floating Chrome Mockup -->
+<div class="flex-1 relative w-full max-w-sm h-64">
+<div class="absolute top-0 right-0 glass-panel w-full p-4 rounded-xl shadow-2xl border-t-2 border-primary/30 z-20">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-8 h-8 bg-error-container flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined text-on-error-container text-sm">report</span>
+</div>
+<div>
+<h6 class="text-sm font-bold text-white">Scam Site Blocked</h6>
+<p class="text-[10px] text-on-surface-variant">Threat level: Critical</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest/50 p-3 rounded-lg mb-4">
+<p class="text-[10px] font-mono text-error">URL: login-bank-secure.net/auth</p>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-surface-bright py-2 rounded-lg text-xs font-bold text-white">Ignore</button>
+<button class="flex-1 bg-error-container py-2 rounded-lg text-xs font-bold text-white">Close Tab</button>
+</div>
+</div>
+<!-- Decorative back layers -->
+<div class="absolute -top-4 -right-4 bg-secondary/10 w-full h-full rounded-xl -z-10"></div>
+<div class="absolute -top-8 -right-8 bg-primary/5 w-full h-full rounded-xl -z-20"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="bg-[#11062d] w-full py-12 px-8 tonal-shift bg-[#160a36]">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6 max-w-7xl mx-auto">
+<div class="space-y-2">
+<div class="text-[#a8a4ff] font-bold text-xl font-headline">AI Digital Shield</div>
+<p class="font-['Inter'] text-xs text-[#b1a4d3] max-w-xs">© 2024 AI Digital Shield. Powered by Obsidian Sentinel AI.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="text-[#b1a4d3] hover:text-[#a8a4ff] transition-colors font-['Inter'] text-xs" href="#">Privacy Policy</a>
+<a class="text-[#b1a4d3] hover:text-[#a8a4ff] transition-colors font-['Inter'] text-xs" href="#">Terms of Service</a>
+<a class="text-[#b1a4d3] hover:text-[#a8a4ff] transition-colors font-['Inter'] text-xs" href="#">Threat Intelligence</a>
+<a class="text-[#b1a4d3] hover:text-[#a8a4ff] transition-colors font-['Inter'] text-xs" href="#">Support</a>
+</div>
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant hover:text-primary cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-lg">public</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant hover:text-primary cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-lg">terminal</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

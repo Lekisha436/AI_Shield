@@ -1,0 +1,54 @@
+<div class="page-header">
+    <h1 class="page-title">Alert Log</h1>
+    <p class="page-sub">All detected threats and security events</p>
+</div>
+
+<div class="bento-grid">
+    <div class="bento-card col-span-12">
+        <div class="card-header">
+            <div class="filter-bar">
+                <input class="input-field compact" type="text" id="alert-filter" placeholder="Filter alerts..." oninput="filterAlerts(this.value)">
+            </div>
+            <div class="gap"></div>
+            <button class="btn-danger small" onclick="clearAlerts()">
+                <span class="material-symbols-outlined">delete</span> Clear All
+            </button>
+        </div>
+
+        {{#if alerts.length}}
+        <div class="table-wrap" id="alerts-table-wrap">
+            <table class="data-table" id="alerts-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Type</th>
+                        <th>Source</th>
+                        <th>Detail</th>
+                        <th>Status</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each alerts}}
+                    <tr class="alert-row" data-type="{{type}}" data-status="{{status}}">
+                        <td class="muted">#{{id}}</td>
+                        <td><span class="tag">{{type}}</span></td>
+                        <td>{{source}}</td>
+                        <td class="input-preview">{{detail}}</td>
+                        <td><span class="badge {{statusClass status}}">{{status}}</span></td>
+                        <td class="muted">{{formatDate timestamp}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{else}}
+        <div class="empty-state">
+            <span class="material-symbols-outlined">check_circle</span>
+            <p>No alerts logged. Your system is clean!</p>
+        </div>
+        {{/if}}
+    </div>
+</div>
+
+<script src="/js/alerts.js"></script>

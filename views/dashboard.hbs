@@ -1,0 +1,116 @@
+<!-- Hero Stats -->
+<section class="stats-grid">
+    <div class="stat-card primary">
+        <div class="stat-label">Total Scans</div>
+        <div class="stat-value" id="stat-scans">{{metrics.activeScans}}</div>
+        <span class="material-symbols-outlined stat-icon">radar</span>
+    </div>
+    <div class="stat-card danger">
+        <div class="stat-label">Threats Blocked</div>
+        <div class="stat-value" id="stat-threats">{{metrics.threatsBlocked}}</div>
+        <span class="material-symbols-outlined stat-icon">security</span>
+    </div>
+    <div class="stat-card success">
+        <div class="stat-label">Safety Score</div>
+        <div class="stat-value" id="stat-safety">{{metrics.safetyScore}}<span class="stat-unit">%</span></div>
+        <span class="material-symbols-outlined stat-icon">verified_user</span>
+    </div>
+</section>
+
+<!-- Main Bento Grid -->
+<div class="bento-grid">
+    <!-- Recent Alerts -->
+    <div class="bento-card col-span-8">
+        <div class="card-header">
+            <h2 class="card-title">Recent Alerts</h2>
+            <a href="/alerts" class="card-link">View All →</a>
+        </div>
+        {{#if alerts.length}}
+        <div class="alert-list">
+            {{#each alerts}}
+            <div class="alert-item">
+                <div class="alert-icon">
+                    <span class="material-symbols-outlined">warning</span>
+                </div>
+                <div class="alert-info">
+                    <div class="alert-type">{{type}}</div>
+                    <div class="alert-detail">{{detail}}</div>
+                    <div class="alert-time">{{formatDate timestamp}}</div>
+                </div>
+                <span class="badge {{statusClass status}}">{{status}}</span>
+            </div>
+            {{/each}}
+        </div>
+        {{else}}
+        <div class="empty-state">
+            <span class="material-symbols-outlined">check_circle</span>
+            <p>No threats detected. All clear!</p>
+        </div>
+        {{/if}}
+    </div>
+
+    <!-- Quick Scan Widget -->
+    <div class="bento-card col-span-4">
+        <div class="card-header">
+            <h2 class="card-title">Quick Scan</h2>
+        </div>
+        <form id="quick-scan-form" class="quick-scan">
+            <select class="input-field" id="quick-scan-type" name="type">
+                <option value="Message">Message</option>
+                <option value="URL">URL</option>
+                <option value="Email">Email</option>
+            </select>
+            <textarea class="input-field" id="quick-scan-input" name="input" rows="3" placeholder="Paste suspicious content here..."></textarea>
+            <button type="submit" class="btn-primary full-width">
+                <span class="material-symbols-outlined">radar</span> Scan Now
+            </button>
+        </form>
+        <div id="quick-scan-result" class="scan-result-widget hidden"></div>
+    </div>
+
+    <!-- Scan History -->
+    <div class="bento-card col-span-12">
+        <div class="card-header">
+            <h2 class="card-title">Recent Scans</h2>
+            <a href="/scan" class="card-link">New Scan →</a>
+        </div>
+        {{#if scans.length}}
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Input Preview</th>
+                        <th>Result</th>
+                        <th>Risk Score</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each scans}}
+                    <tr>
+                        <td><span class="tag">{{type}}</span></td>
+                        <td class="input-preview">{{input}}</td>
+                        <td><span class="badge {{statusClass status}}">{{result}}</span></td>
+                        <td>
+                            <div class="risk-bar-wrap">
+                                <div class="risk-bar" style="width: {{risk_score}}%"></div>
+                                <span>{{risk_score}}%</span>
+                            </div>
+                        </td>
+                        <td class="muted">{{formatDate timestamp}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{else}}
+        <div class="empty-state">
+            <span class="material-symbols-outlined">search_off</span>
+            <p>No scans yet. Run your first scan above!</p>
+        </div>
+        {{/if}}
+    </div>
+</div>
+
+<script src="/js/dashboard.js"></script>

@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: ai_digital_shield_web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    # Uncomment below to add hot-reloading volume mounting during local dev
+    # volumes:
+    #   - .:/usr/src/app
+    #   - /usr/src/app/node_modules

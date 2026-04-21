@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Authentication | AI Digital Shield</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                  "primary": "#004ac6",
+                  "on-primary": "#ffffff",
+                  "error": "#ba1a1a",
+                  "error-container": "#ffdad6",
+                  "on-error-container": "#93000a",
+                  "tertiary": "#006229",
+                  "surface": "#faf8ff",
+                  "surface-container-lowest": "#ffffff",
+                  "surface-container-low": "#f3f3fe",
+                  "surface-container": "#ededf9",
+                  "on-surface": "#191b23",
+                  "on-surface-variant": "#434655",
+                  "outline-variant": "#c3c6d7"
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        .glow { box-shadow: 0 0 40px rgba(0, 74, 198, 0.15); }
+        .switch-anim { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface h-screen flex items-center justify-center overflow-hidden relative">
+
+    <!-- Background Elements -->
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-primary opacity-10 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-40 -right-40 w-[30rem] h-[30rem] bg-tertiary opacity-10 rounded-full blur-3xl"></div>
+
+    <!-- Main Auth Card -->
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-10 relative z-10 glow mx-4">
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary/30">
+                <span class="material-symbols-outlined text-white text-3xl">security</span>
+            </div>
+            <h1 class="text-2xl font-black tracking-tight text-on-surface">Guardian Core</h1>
+            <p class="text-sm font-bold tracking-widest text-primary uppercase mt-1">Aegis Lumina Access</p>
+        </div>
+
+        <div id="error-box" class="hidden mb-6 bg-error-container border border-error/20 text-on-error-container p-4 rounded-xl text-sm font-bold text-center"></div>
+
+        <!-- Forms Container -->
+        <div class="relative overflow-hidden h-72">
+            <!-- Login Form -->
+            <form id="login-form" class="absolute w-full top-0 left-0 switch-anim flex flex-col gap-5">
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 block">Agent ID / Username</label>
+                    <input type="text" id="login-user" required class="w-full px-5 py-3 rounded-xl border border-outline-variant bg-surface-container-low focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-on-surface-variant/40 font-semibold" placeholder="system.admin">
+                </div>
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 block">Access Cipher</label>
+                    <input type="password" id="login-pass" required class="w-full px-5 py-3 rounded-xl border border-outline-variant bg-surface-container-low focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-on-surface-variant/40 font-semibold" placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full mt-2 py-3.5 bg-primary text-white rounded-xl font-bold uppercase tracking-widest hover:bg-blue-800 transition-colors shadow-md active:scale-95 flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">login</span> Authenticate
+                </button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="absolute w-full top-0 left-full opacity-0 switch-anim flex flex-col gap-5">
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 block">New Agent Username</label>
+                    <input type="text" id="reg-user" required class="w-full px-5 py-3 rounded-xl border border-outline-variant bg-surface-container-low focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-on-surface-variant/40 font-semibold" placeholder="neo.matrix">
+                </div>
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 block">Secure Passphrase</label>
+                    <input type="password" id="reg-pass" required minlength="6" class="w-full px-5 py-3 rounded-xl border border-outline-variant bg-surface-container-low focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-on-surface-variant/40 font-semibold" placeholder="6+ characters">
+                </div>
+                <button type="submit" class="w-full mt-2 py-3.5 bg-tertiary text-white rounded-xl font-bold uppercase tracking-widest hover:bg-green-800 transition-colors shadow-md active:scale-95 flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">person_add</span> Enlist
+                </button>
+            </form>
+        </div>
+
+        <div class="mt-8 text-center border-t border-outline-variant/30 pt-6">
+            <p id="toggle-text" class="text-sm font-semibold text-on-surface-variant">
+                Unregistered agent? <button type="button" onclick="toggleForm()" class="text-primary hover:underline ml-1 uppercase tracking-wider font-bold">Request Access</button>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let isLogin = true;
+        
+        function toggleForm() {
+            isLogin = !isLogin;
+            const loginForm = document.getElementById('login-form');
+            const regForm = document.getElementById('register-form');
+            const toggleText = document.getElementById('toggle-text');
+            const errBox = document.getElementById('error-box');
+            
+            errBox.classList.add('hidden');
+
+            if (isLogin) {
+                loginForm.style.transform = 'translateX(0)';
+                loginForm.style.opacity = '1';
+                regForm.style.transform = 'translateX(100%)';
+                regForm.style.opacity = '0';
+                toggleText.innerHTML = 'Unregistered agent? <button type="button" onclick="toggleForm()" class="text-primary hover:underline ml-1 uppercase tracking-wider font-bold">Request Access</button>';
+            } else {
+                loginForm.style.transform = 'translateX(-100%)';
+                loginForm.style.opacity = '0';
+                regForm.style.transform = 'translateX(0)';
+                regForm.style.opacity = '1';
+                toggleText.innerHTML = 'Already an agent? <button type="button" onclick="toggleForm()" class="text-primary hover:underline ml-1 uppercase tracking-wider font-bold">Authenticate</button>';
+            }
+        }
+
+        function showError(msg) {
+            const errBox = document.getElementById('error-box');
+            errBox.textContent = msg;
+            errBox.classList.remove('hidden');
+        }
+
+        async function handleAuth(url, payload, btnParams) {
+            const btn = document.querySelector(btnParams.selector);
+            const origHTML = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">data_usage</span> Processing...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                
+                if (!res.ok) { throw new Error(data.error || 'Authentication failed'); }
+                
+                // Success: Redirect to dashboard
+                window.location.href = '/';
+            } catch (err) {
+                showError(err.message);
+                btn.innerHTML = origHTML;
+                btn.disabled = false;
+            }
+        }
+
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleAuth('/api/v1/auth/login', {
+                username: document.getElementById('login-user').value.trim(),
+                password: document.getElementById('login-pass').value
+            }, { selector: '#login-form button' });
+        });
+
+        document.getElementById('register-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleAuth('/api/v1/auth/register', {
+                username: document.getElementById('reg-user').value.trim(),
+                password: document.getElementById('reg-pass').value
+            }, { selector: '#register-form button' });
+        });
+    </script>
+</body>
+</html>

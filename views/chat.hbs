@@ -1,0 +1,47 @@
+<div class="page-header">
+    <h1 class="page-title">Shield Assistant</h1>
+    <p class="page-sub">AI-powered security advisor — ask anything about your shield</p>
+</div>
+
+<div class="chat-layout">
+    <div class="chat-window" id="chat-window">
+        <!-- Seed messages from server -->
+        {{#if history.length}}
+            {{#each history}}
+            <div class="chat-msg {{role}}">
+                <div class="chat-bubble">
+                    {{#if (eq role 'assistant')}}
+                    <span class="material-symbols-outlined bot-icon">smart_toy</span>
+                    {{/if}}
+                    <div class="bubble-text">{{message}}</div>
+                </div>
+            </div>
+            {{/each}}
+        {{else}}
+        <div class="chat-msg assistant">
+            <div class="chat-bubble">
+                <span class="material-symbols-outlined bot-icon">smart_toy</span>
+                <div class="bubble-text">👋 Hello! I'm your <strong>AI Shield Assistant</strong>. Ask me about threats, scan guidance, or your current security posture.</div>
+            </div>
+        </div>
+        {{/if}}
+    </div>
+
+    <!-- Suggested Prompts -->
+    <div class="prompt-chips" id="prompt-chips">
+        <button class="chip" onclick="sendPrompt('What threats were detected today?')">Today's threats</button>
+        <button class="chip" onclick="sendPrompt('What is the current system status?')">System status</button>
+        <button class="chip" onclick="sendPrompt('How does phishing work?')">About phishing</button>
+        <button class="chip" onclick="sendPrompt('How do I scan a suspicious URL?')">How to scan</button>
+    </div>
+
+    <!-- Input Bar -->
+    <div class="chat-input-bar">
+        <input type="text" id="chat-input" class="chat-input" placeholder="Ask your shield assistant..." onkeydown="if(event.key==='Enter') sendChat()">
+        <button class="btn-primary" onclick="sendChat()">
+            <span class="material-symbols-outlined">send</span>
+        </button>
+    </div>
+</div>
+
+<script src="/js/chat.js"></script>

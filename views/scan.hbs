@@ -1,0 +1,100 @@
+<div class="page-header">
+    <h1 class="page-title">Threat Scanner</h1>
+    <p class="page-sub">Analyse messages, URLs, emails and images using AI heuristics</p>
+</div>
+
+<!-- Scan Tabs -->
+<div class="tabs" id="scan-tabs">
+    <button class="tab active" data-tab="message">
+        <span class="material-symbols-outlined">chat</span> Message
+    </button>
+    <button class="tab" data-tab="url">
+        <span class="material-symbols-outlined">link</span> URL
+    </button>
+    <button class="tab" data-tab="email">
+        <span class="material-symbols-outlined">mail</span> Email
+    </button>
+</div>
+
+<!-- Scan Form -->
+<div class="bento-grid">
+    <div class="bento-card col-span-7">
+        <form id="scan-form">
+            <input type="hidden" id="scan-type" value="Message">
+
+            <div class="tab-panel active" id="panel-message">
+                <label class="field-label">Paste suspicious message</label>
+                <textarea class="input-field large" name="input" id="input-message" rows="8"
+                    placeholder="e.g. Urgent: Your account has been suspended. Click here to verify..."></textarea>
+            </div>
+
+            <div class="tab-panel" id="panel-url">
+                <label class="field-label">Enter URL to scan</label>
+                <input class="input-field" name="input" id="input-url" type="text"
+                    placeholder="https://suspicious-domain.xyz/login">
+            </div>
+
+            <div class="tab-panel" id="panel-email">
+                <label class="field-label">Paste email content</label>
+                <textarea class="input-field large" name="input" id="input-email" rows="8"
+                    placeholder="Paste the full email body here..."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary" id="scan-btn">
+                    <span class="material-symbols-outlined">radar</span> Run Scan
+                </button>
+                <button type="button" class="btn-secondary" onclick="clearScan()">Clear</button>
+            </div>
+        </form>
+
+        <!-- Result Panel -->
+        <div id="scan-result" class="scan-result-panel hidden">
+            <div class="result-header">
+                <h3 id="result-verdict"></h3>
+                <span class="badge" id="result-badge"></span>
+            </div>
+            <div class="risk-meter-wrap">
+                <div class="risk-meter-label">
+                    <span>Risk Score</span>
+                    <span id="result-score-text">0%</span>
+                </div>
+                <div class="risk-meter">
+                    <div class="risk-meter-fill" id="result-meter" style="width:0%"></div>
+                </div>
+            </div>
+            <div id="result-findings" class="findings-list"></div>
+        </div>
+    </div>
+
+    <!-- Scan History Sidebar -->
+    <div class="bento-card col-span-5">
+        <div class="card-header">
+            <h2 class="card-title">Scan History</h2>
+        </div>
+        <div id="scan-history-list">
+            {{#if scans.length}}
+                {{#each scans}}
+                <div class="history-item">
+                    <div class="history-meta">
+                        <span class="tag small">{{type}}</span>
+                        <span class="muted small">{{formatDate timestamp}}</span>
+                    </div>
+                    <div class="history-input">{{input}}</div>
+                    <div class="history-result">
+                        <span class="badge {{statusClass status}}">{{result}}</span>
+                        <span class="risk-pill">{{risk_score}}% risk</span>
+                    </div>
+                </div>
+                {{/each}}
+            {{else}}
+                <div class="empty-state small">
+                    <span class="material-symbols-outlined">search_off</span>
+                    <p>No scans yet</p>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+<script src="/js/scan.js"></script>
