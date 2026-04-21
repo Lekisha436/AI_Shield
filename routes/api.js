@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../database');
+const { GoogleGenAI } = require('@google/genai');
+
+// Initialize Gemini Client
+const genAI = new GoogleGenAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 // GET /api/v1/health
 router.get('/health', (req, res) => {
@@ -21,38 +26,65 @@ router.get('/analytics', (req, res) => {
     });
 });
 
-// POST /api/v1/scan - simulate AI scanning
-router.post('/scan', (req, res) => {
+// POST /api/v1/scan - Dynamic Google Gemini Scanning
+router.post('/scan', async (req, res) => {
     const { type, input } = req.body;
     if (!type || !input) return res.status(400).json({ error: 'Type and input are required' });
 
-    // Keyword-based heuristic threat detection
-    const phishingPatterns = ['click here', 'verify your', 'account suspended', 'urgent', 'win', 'free', 'bank', 'password', 'login', 'confirm', 'suspended', 'alert'];
-    const maliciousDomains = ['secure-login', 'apple-id', 'paypal-verify', 'bank-confirm', '.xyz', '.tk', '.ru'];
-
     let riskScore = 0;
     let findings = [];
-    const lowerInput = input.toLowerCase();
+    let status = 'Safe';
+    let resultText = 'Clean';
 
-    phishingPatterns.forEach(p => {
-        if (lowerInput.includes(p)) { riskScore += 15; findings.push(`Suspicious keyword: "${p}"`); }
-    });
-    maliciousDomains.forEach(d => {
-        if (lowerInput.includes(d)) { riskScore += 25; findings.push(`Suspicious domain pattern: "${d}"`); }
-    });
-    if (/https?:\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.test(input)) {
-        riskScore += 35; findings.push('Bare IP address used as URL (suspicious)');
+    if (!process.env.GEMINI_API_KEY) {
+        return res.json({
+            result: "API_KEY_MISSING",
+            riskScore: 0,
+            status: "Safe",
+            findings: ["Error: GEMINI_API_KEY environment variable is not set. Cannot perform dynamic AI scan."],
+            timestamp: new Date().toISOString()
+        });
     }
 
-    riskScore = Math.min(riskScore, 100);
-    const status = riskScore >= 60 ? 'Blocked' : riskScore >= 30 ? 'Quarantined' : 'Safe';
-    const result = riskScore >= 60 ? 'Threat Detected' : riskScore >= 30 ? 'Suspicious' : 'Clean';
+    try {
+        const prompt = `You are Aegis Lumina, an expert enterprise cybersecurity AI threat analyzer.
+Analyze the following ${type} content and determine its malice.
+Content to analyze: "${input}"
+
+Respond ONLY with a raw JSON object containing the exact following keys:
+- "riskScore": integer from 0 to 100 representing the threat probability.
+- "findings": array of short, powerful strings describing specific detected flags or tactics (e.g. "Urgency applied", "Typo-squatted domain").
+- "status": string exactly either "Safe", "Quarantined", or "Blocked".
+- "resultText": string describing general status like "Clean", "Suspicious", or "Threat Detected".
+
+Do not return markdown, do not wrap in \`\`\`. ONLY valid JSON.
+`;
+        
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        let outputStr = response.text().trim();
+
+        // Clean markdown JSON wrapper if the model aggressively included it
+        if (outputStr.startsWith('```')) {
+            const match = outputStr.match(/```(?:json)?\n([\s\S]*?)```/);
+            if (match) outputStr = match[1];
+        }
+
+        const aiData = JSON.parse(outputStr);
+        riskScore = aiData.riskScore || 0;
+        findings = aiData.findings || [];
+        status = aiData.status || 'Safe';
+        resultText = aiData.resultText || 'Clean';
+
+    } catch (err) {
+        console.error("Gemini Error:", err);
+        return res.status(500).json({ result: "ERROR", error: "AI Engine malfunction", findings: [err.message] });
+    }
+
     const timestamp = new Date().toISOString();
 
     db.run('INSERT INTO scans (type, input, result, risk_score, timestamp) VALUES (?,?,?,?,?)',
-        [type, input, result, riskScore, timestamp], function(err) {
-            if (err) console.error(err);
-        });
+        [type, input, resultText, riskScore, timestamp]);
 
     if (status !== 'Safe') {
         db.run('INSERT INTO alerts (type, source, detail, timestamp, status) VALUES (?,?,?,?,?)',
@@ -61,7 +93,7 @@ router.post('/scan', (req, res) => {
     }
     db.run("UPDATE metrics SET value = value + 1 WHERE key = 'activeScans'");
 
-    res.json({ result, riskScore, status, findings, timestamp });
+    res.json({ result: resultText, riskScore, status, findings, timestamp });
 });
 
 // GET /api/v1/alerts
@@ -84,35 +116,53 @@ router.post('/alerts', (req, res) => {
         });
 });
 
-// POST /api/v1/chat - simple AI shield assistant
-router.post('/chat', (req, res) => {
+// POST /api/v1/chat - Dynamic Assistant powered by Gemini
+router.post('/chat', async (req, res) => {
     const { message } = req.body;
     if (!message) return res.status(400).json({ error: 'Message is required' });
     const timestamp = new Date().toISOString();
-    const lowerMsg = message.toLowerCase();
 
-    // Predefined intelligent responses
-    let reply = '';
-    if (lowerMsg.includes('threat') || lowerMsg.includes('attack')) {
-        reply = '🔍 I\'ve analyzed recent threats. We\'ve blocked ' + ' multiple intrusions today. The main vectors detected are phishing URLs and injection attempts. All systems are secured.';
-    } else if (lowerMsg.includes('scan') || lowerMsg.includes('check')) {
-        reply = '⚡ To scan content, head to the Scan page and paste your message, URL, or email. I\'ll run a full heuristic analysis and show you a risk breakdown instantly.';
-    } else if (lowerMsg.includes('status') || lowerMsg.includes('safe')) {
-        reply = '✅ Current shield status: All systems operational. Firewall active, threat intelligence feeds updated 2 minutes ago.';
-    } else if (lowerMsg.includes('hello') || lowerMsg.includes('hi')) {
-        reply = '👋 Hello! I\'m your AI Shield Assistant. I can help you understand threats, guide you through scans, or provide a system status report. What do you need?';
-    } else if (lowerMsg.includes('block') || lowerMsg.includes('lockdown')) {
-        reply = '🔒 Emergency lockdown mode is available from the sidebar. This will isolate network connections and freeze all suspicious processes until you authorize resumption.';
-    } else if (lowerMsg.includes('phish')) {
-        reply = '🎣 Phishing attacks use urgency and deception to steal credentials. Always verify URLs before clicking, check sender email domains carefully, and never enter credentials via email links.';
-    } else {
-        reply = '🛡️ I\'m your AI Digital Shield assistant. I can help with threat analysis, scan guidance, and security recommendations. Try asking about threats, scan results, or current system status.';
+    if (!process.env.GEMINI_API_KEY) {
+        return res.json({ reply: "⚠️ Error: The Shield AI requires a GEMINI_API_KEY in the environment variables to function.", timestamp });
     }
 
-    db.run('INSERT INTO chat_history (role, message, timestamp) VALUES (?,?,?)', ['user', message, timestamp]);
-    db.run('INSERT INTO chat_history (role, message, timestamp) VALUES (?,?,?)', ['assistant', reply, timestamp]);
+    try {
+        db.all('SELECT role, message FROM chat_history ORDER BY id DESC LIMIT 5', [], async (err, historyRows) => {
+            let contextStr = "Recent conversation context:\n";
+            if (!err && historyRows.length > 0) {
+                historyRows.reverse().forEach(r => {
+                    contextStr += `${r.role === 'user' ? 'User' : 'Aegis Lumina'}: ${r.message}\n`;
+                });
+            } else {
+                contextStr = "(No previous conversation context).\n";
+            }
 
-    res.json({ reply, timestamp });
+            const prompt = `You are Aegis Lumina, the AI Digital Shield Assistant.
+You protect the user against cyber threats, provide firewall status, and explain malware techniques. 
+Keep your answers brief, professional, and confident. Do NOT use markdown code blocks or large formatting, just conversational text with emoji where appropriate.
+
+${contextStr}
+User's query: "${message}"`;
+
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const reply = response.text().trim();
+            
+            db.run('INSERT INTO chat_history (role, message, timestamp) VALUES (?,?,?)', ['user', message, timestamp]);
+            db.run('INSERT INTO chat_history (role, message, timestamp) VALUES (?,?,?)', ['assistant', reply, timestamp]);
+            
+            res.json({ reply, timestamp: new Date().toISOString() });
+        });
+    } catch (err) {
+        console.error("Gemini Chat Error:", err);
+        res.status(500).json({ reply: "System Malfunction: Unable to reach the Neural Core.", timestamp });
+    }
+
+    if (!req.env) {
+        db.run('INSERT INTO chat_history (role, message, timestamp) VALUES (?,?,?)', ['user', message, timestamp]);
+        db.run('INSERT INTO chat_history (role, message, timestamp) VALUES (?,?,?)', ['assistant', reply, timestamp]);
+        res.json({ reply, timestamp });
+    }
 });
 
 // GET /api/v1/chat/history
