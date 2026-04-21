@@ -94,8 +94,6 @@
     $$('button[class*="bottom-8"]').forEach(btn => {
       if (btn.textContent.includes('radar')) btn.onclick = () => location.href = '/scan';
     });
-      if (btn.textContent.includes('radar')) btn.onclick = () => location.href = '/scan';
-    });
   }
 
   /* ── Live Analytics (Dashboard) ─────────────── */
@@ -155,8 +153,8 @@
       btn.addEventListener('click', async e => {
         e.preventDefault();
 
-        // Find nearest input/textarea
-        const container = btn.closest('div, section, form') || document.body;
+        // Find nearest input/textarea within the scanner block
+        const container = btn.closest('.scanner-content, section, form') || document.body;
         const inputEl = container.querySelector('textarea') ||
                         container.querySelector('input[type=text]') ||
                         container.querySelector('input:not([type=hidden]):not([type=submit])');
