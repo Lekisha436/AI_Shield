@@ -24,17 +24,34 @@ const SCREENS = {
 };
 
 // Helper: serve a Stitch HTML file with shield.js injected
+// Helper: serve a Stitch HTML file with shield.js injected and mockups cleaned
 function serveScreen(screenFile, res) {
   const filePath = path.join(__dirname, 'public', screenFile);
   if (!fs.existsSync(filePath)) {
     return res.status(404).send('Screen not found');
   }
   let html = fs.readFileSync(filePath, 'utf8');
-  // Inject shield.js before </body>
-  const injection = '\n<script src="/js/shield.js"></script>\n';
+
+  // 1. Remove redundant mockup scripts to prevent conflicts
+  html = html.replace(/<script\b[^>]*>([\s\S]*?)<\/script>/gm, (match) => {
+    if (match.includes('shield.js') || match.includes('tailwind')) return match;
+    return '<!-- Stripped Mockup Script -->';
+  });
+
+  // 2. Hide static mockup result cards via injected style
+  const shieldStyles = `
+    <style>
+      #scan-result-container, .scan-result-card, [id*="result-card"] { display: none !important; }
+      .dynamic-result-active { display: block !important; }
+    </style>
+  `;
+
+  // 3. Inject shield.js and styles
+  const injection = `\n${shieldStyles}\n<script src="/js/shield.js"></script>\n`;
   if (!html.includes('shield.js')) {
     html = html.replace('</body>', injection + '</body>');
   }
+
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.send(html);
 }

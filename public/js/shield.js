@@ -186,10 +186,14 @@
           const data = await res.json();
 
           // Show inline result if a result card exists, else toast
-          const resultCard = $('.lg\\:col-span-8 .bg-surface-container-lowest') ||
-                             $('#scan-result-card') ||
+          const resultCard = $('.lg\\:col-span-8 .bg-surface-container-lowest, [id*="result-card"]') ||
+                             $('.bg-surface-container-low.p-6.rounded-xl.border-l-4.border-error')?.closest('div') ||
                              null;
           if (resultCard) {
+            // Unhide and clear any mockup content
+            const parent = resultCard.closest('[id*="result-container"]') || resultCard;
+            parent.classList.add('dynamic-result-active');
+            parent.style.display = 'block'; 
             renderResultCard(resultCard, data, input, type);
             resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           } else {

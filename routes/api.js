@@ -37,12 +37,14 @@ router.post('/scan', async (req, res) => {
     let status = 'Safe';
     let resultText = 'Clean';
 
-    if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'YOUR_API_KEY_HERE') {
+    const API_KEY = (process.env.GEMINI_API_KEY || '').trim();
+    if (!API_KEY || API_KEY === 'YOUR_API_KEY_HERE') {
+        console.error('❌ Gemini API Key is missing in environment!');
         return res.json({
             result: "API_KEY_MISSING",
             riskScore: 0,
-            status: "Safe",
-            findings: ["Error: GEMINI_API_KEY environment variable is not set. Cannot perform dynamic AI scan."],
+            status: "Error",
+            findings: ["Error: The GEMINI_API_KEY is not configured in the .env file. Please add your key and restart the server."],
             timestamp: new Date().toISOString()
         });
     }
