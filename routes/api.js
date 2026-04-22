@@ -63,12 +63,11 @@ Respond ONLY with a raw JSON object containing the exact following keys:
 Do not return markdown, do not wrap in \`\`\`. ONLY valid JSON.
 `;
         
-        const response = await ai.models.generateContent({
-            model: 'gemini-1.5-flash',
-            contents: prompt
-        });
-
+        const model = ai.getGenerativeModel({ model: 'gemini-1.5-flash' });
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
         let outputStr = response.text().trim();
+
 
         // Clean markdown JSON wrapper if the model aggressively included it
         if (outputStr.startsWith('```')) {
