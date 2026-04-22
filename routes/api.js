@@ -89,8 +89,15 @@ Do not return markdown, do not wrap in \`\`\`. ONLY valid JSON.
 
     } catch (err) {
         console.error("Gemini Error:", err);
-        return res.status(500).json({ result: "ERROR", error: "AI Engine malfunction", findings: [err.message] });
+        return res.status(500).json({ 
+            result: "ERROR", 
+            riskScore: 0,
+            status: "Error",
+            error: "AI Engine malfunction", 
+            findings: [err.message] 
+        });
     }
+
 
     const timestamp = new Date().toISOString();
 
