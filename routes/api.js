@@ -3,8 +3,17 @@ const router = express.Router();
 const db = require('../database');
 const { GoogleGenAI } = require('@google/genai');
 
-// Initialize Gemini Client with the new @google/genai SDK pattern
-const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
+// Lazy-initialized Gemini Client
+let aiInstance = null;
+function getAI() {
+    if (aiInstance) return aiInstance;
+    const key = (process.env.GEMINI_API_KEY || '').trim();
+    if (!key || key === 'YOUR_API_KEY_HERE') {
+        throw new Error('GEMINI_API_KEY_MISSING');
+    }
+    aiInstance = new GoogleGenAI(key);
+    return aiInstance;
+}
 
 // GET /api/v1/health
 router.get('/health', (req, res) => {
@@ -61,7 +70,7 @@ Respond ONLY with a raw JSON object containing the exact following keys:
 Do not return markdown, do not wrap in \`\`\`. ONLY valid JSON.
 `;
         
-        const model = ai.getGenerativeModel({ model: 'gemini-1.5-flash' });
+        const model = getAI().getGenerativeModel({ model: 'gemini-1.5-flash' });
         const result = await model.generateContent(prompt);
         const response = await result.response;
         let outputStr = response.text().trim();
@@ -147,7 +156,7 @@ Keep your answers brief, professional, and confident. Do NOT use markdown code b
 ${contextStr}
 User's query: "${message}"`;
 
-            const model = ai.getGenerativeModel({ model: 'gemini-1.5-flash' });
+            const model = getAI().getGenerativeModel({ model: 'gemini-1.5-flash' });
             const result = await model.generateContent(prompt);
             const response = await result.response;
 

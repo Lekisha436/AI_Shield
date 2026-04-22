@@ -19,8 +19,10 @@ const API_KEY = (process.env.GEMINI_API_KEY || '').trim();
 if (!API_KEY || API_KEY === 'YOUR_API_KEY_HERE') {
     console.warn('⚠️  WARNING: GEMINI_API_KEY is missing or invalid in .env! AI features will be disabled.');
 } else {
-    console.log('✅ AI Neural Core initialized successfully.');
+    // Show first 4 chars for safety verification
+    console.log(`✅ AI Neural Core Link Established (Key: ${API_KEY.substring(0,4)}...)`);
 }
+
 
 const JWT_SECRET = process.env.JWT_SECRET || 'aegis-lumina-super-secret-key-2026';
 
