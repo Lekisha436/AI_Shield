@@ -48,14 +48,12 @@ router.post('/scan', async (req, res) => {
     const API_KEY = (process.env.GEMINI_API_KEY || '').trim();
     if (!API_KEY || API_KEY === 'YOUR_API_KEY_HERE') {
         console.error('❌ Gemini API Key is missing in environment!');
-        return res.json({
-            result: "API_KEY_MISSING",
-            riskScore: 0,
-            status: "Error",
-            findings: ["Error: The GEMINI_API_KEY is not configured in the .env file. Please add your key and restart the server."],
-            timestamp: new Date().toISOString()
-        });
+        // Try fallback to check if it's just a race
+        if (!process.env.GEMINI_API_KEY) {
+             require('dotenv').config();
+        }
     }
+
 
     try {
         const prompt = `You are Aegis Lumina, an expert enterprise cybersecurity AI threat analyzer.
