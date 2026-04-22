@@ -4,9 +4,7 @@ const db = require('../database');
 const { GoogleGenAI } = require('@google/genai');
 
 // Initialize Gemini Client with the new @google/genai SDK pattern
-const ai = new GoogleGenAI({ 
-    apiKey: process.env.GEMINI_API_KEY 
-});
+const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
 // GET /api/v1/health
 router.get('/health', (req, res) => {
@@ -149,10 +147,10 @@ Keep your answers brief, professional, and confident. Do NOT use markdown code b
 ${contextStr}
 User's query: "${message}"`;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-1.5-flash',
-                contents: prompt
-            });
+            const model = ai.getGenerativeModel({ model: 'gemini-1.5-flash' });
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+
 
             const reply = response.text().trim();
             
