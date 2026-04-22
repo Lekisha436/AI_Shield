@@ -153,31 +153,28 @@
       btn.addEventListener('click', async e => {
         e.preventDefault();
 
-        // Find nearest input/textarea within the scanner block
-        const container = btn.closest('.scanner-content, section, form') || document.body;
-        const inputEl = container.querySelector('textarea') ||
-                        container.querySelector('input[type=text]') ||
-                        container.querySelector('input:not([type=hidden]):not([type=submit])');
+        // 1. Find nearest input
+        const container = btn.closest('.scanner-content, section, .space-y-4') || document.body;
+        const inputEl = container.querySelector('textarea') || container.querySelector('input[type="text"]');
         const input = inputEl ? inputEl.value.trim() : '';
         if (!input) { if (inputEl) inputEl.focus(); return; }
 
-        // Determine type from tab or button text
-        let type = 'Message';
-        const activetab = $('[class*="tab-btn"].active, [class*="tab"].active[data-target]') ;
-        if (activetab) {
-          const t = activetab.textContent.toLowerCase();
-          if (t.includes('url')) type = 'URL';
-          else if (t.includes('email')) type = 'Email';
-          else if (t.includes('image')) type = 'Image';
-        } else if (txt.includes('url')) type = 'URL';
-        else if (txt.includes('email')) type = 'Email';
-        else if (txt.includes('image')) type = 'Image';
+        // 2. Identify Result Container (Target the new IDs we added)
+        const resultLayout = $('#scan-results-container') || $('#dashboard-results-container');
+        const resultCard = resultLayout ? resultLayout.querySelector('.bg-surface-container-lowest') : null;
 
-        const orig = btn.innerHTML;
+        // 3. Loading State
+        const origInner = btn.innerHTML;
         btn.disabled = true;
-        btn.innerHTML = '<span class="material-symbols-outlined" style="vertical-align:middle;font-size:16px">hourglass_top</span> Analysing…';
+        btn.innerHTML = '<span class="material-symbols-outlined animate-spin" style="font-size:16px">progress_activity</span> Analysing...';
 
         try {
+          // Determine type
+          let type = 'Message';
+          if (txt.includes('url')) type = 'URL';
+          else if (txt.includes('email')) type = 'Email';
+          else if (txt.includes('image')) type = 'Image';
+
           const res = await fetch('/api/v1/scan', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -185,31 +182,27 @@
           });
           const data = await res.json();
 
-          // Show inline result if a result card exists, else toast
-          const resultCard = $('.lg\\:col-span-8 .bg-surface-container-lowest, [id*="result-card"]') ||
-                             $('.bg-surface-container-low.p-6.rounded-xl.border-l-4.border-error')?.closest('div') ||
-                             null;
-          if (resultCard) {
-            // Unhide and clear any mockup content
-            const parent = resultCard.closest('[id*="result-container"]') || resultCard;
-            parent.classList.add('dynamic-result-active');
-            parent.style.display = 'block'; 
+          if (resultLayout && resultCard) {
+            // Unhide the whole bento layout
+            resultLayout.style.setProperty('display', 'grid', 'important');
+            // Populate the specific card
             renderResultCard(resultCard, data, input, type);
-            resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            resultLayout.scrollIntoView({ behavior: 'smooth' });
           } else {
             const tp = data.riskScore >= 60 ? 'danger' : data.riskScore >= 30 ? 'warning' : 'success';
             toast(`${data.result} — Risk: ${data.riskScore}%`, tp);
           }
 
           if (inputEl) inputEl.value = '';
-          loadAnalytics(); // refresh counters
-        } catch {
-          toast('Scan failed — is the server running?', 'danger');
+          loadAnalytics();
+        } catch (err) {
+          toast('Connection lost. Is the shield server online?', 'danger');
         } finally {
           btn.disabled = false;
-          btn.innerHTML = orig;
+          btn.innerHTML = origInner;
         }
       });
+
     });
   }
 

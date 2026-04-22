@@ -13,6 +13,15 @@ const authRoutes = require('./routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Startup Check: Validate AI Engine
+const API_KEY = (process.env.GEMINI_API_KEY || '').trim();
+if (!API_KEY || API_KEY === 'YOUR_API_KEY_HERE') {
+    console.warn('⚠️  WARNING: GEMINI_API_KEY is missing or invalid in .env! AI features will be disabled.');
+} else {
+    console.log('✅ AI Neural Core initialized successfully.');
+}
+
 const JWT_SECRET = process.env.JWT_SECRET || 'aegis-lumina-super-secret-key-2026';
 
 // Stitch screen file mapping
@@ -32,17 +41,19 @@ function serveScreen(screenFile, res) {
   }
   let html = fs.readFileSync(filePath, 'utf8');
 
-  // 1. Remove redundant mockup scripts to prevent conflicts
+  // 1. Remove ALL inline scripts from the exported file to prevent conflicts
   html = html.replace(/<script\b[^>]*>([\s\S]*?)<\/script>/gm, (match) => {
-    if (match.includes('shield.js') || match.includes('tailwind')) return match;
-    return '<!-- Stripped Mockup Script -->';
+    if (match.includes('shield.js') || match.includes('tailwind') || match.includes('googleusercontent')) return match;
+    return '';
   });
 
-  // 2. Hide static mockup result cards via injected style
+  // 2. Hide static mockup result cards via injected style (using specific IDs)
   const shieldStyles = `
     <style>
-      #scan-result-container, .scan-result-card, [id*="result-card"] { display: none !important; }
-      .dynamic-result-active { display: block !important; }
+      #dashboard-results-container, #scan-results-container, .scan-result-card { 
+        display: none !important; 
+      }
+      .shield-active-scroll { scroll-behavior: smooth; }
     </style>
   `;
 
@@ -51,6 +62,7 @@ function serveScreen(screenFile, res) {
   if (!html.includes('shield.js')) {
     html = html.replace('</body>', injection + '</body>');
   }
+
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.send(html);
